@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>القهوجي | بن مختص من المصنع إلى بيتك</title>
+<meta name="description" content="القهوجي — بن محمّص طازج يُشحن مباشرة من المصنع للعملاء والتجار، بأسعار قطاعي وجملة.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1c120b">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><div class="roast-stamp">ق</div><div>القهوجي<small>Al-Gahwagy Roastery</small></div></div>
+  <nav>
+    <a href="index.html">المتجر</a>
+    <a href="about.html">من نحن</a>
+    <a href="contact.html">تواصل معنا</a>
+    <span id="authArea"></span>
+    <button class="cart-btn" id="openCartBtn">🛒 السلة <span class="cart-badge" id="cartBadge">0</span></button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">تحميص طازج أسبوعياً</span>
+    <h1>بُنّك المفضّل، <span class="accent">من المحمصة إلى فنجانك</span></h1>
+    <p class="lead">نُحمّص البن طازجاً ونشحنه مباشرة إليك — قطاعي للعملاء، وأسعار جملة للتجار المعتمدين.</p>
+    <div class="hero-actions">
+      <a href="#shop" class="btn btn-gold">تسوّق الآن</a>
+      <a href="login.html" class="btn btn-outline">حساب تاجر / عميل</a>
+    </div>
+  </div>
+</section>
+
+<main class="container" id="shop">
+  <section>
+    <div class="section-head">
+      <div><h2>منتجاتنا</h2><div class="sub">اختر الوزن المناسب واطلب مباشرة</div></div>
+    </div>
+    <div class="toolbar">
+      <input type="search" id="searchInput" placeholder="ابحث عن نوع بن...">
+    </div>
+    <div class="chip-group" id="categoryChips" style="margin-bottom:20px"></div>
+    <div class="grid" id="productsGrid">
+      <div class="empty-state">جاري تحميل المنتجات...</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="about.html">من نحن</a>
+    <a href="contact.html">تواصل معنا</a>
+    <a href="login.html">تسجيل الدخول</a>
+  </div>
+  &copy; <span id="year"></span> القهوجي — جميع الحقوق محفوظة
+</footer>
+
+<a class="wa-float" href="https://wa.me/201000000000" target="_blank" title="تواصل عبر واتساب">💬</a>
+
+<!-- درج السلة -->
+<div class="drawer-overlay" id="cartDrawerOverlay" style="display:none"></div>
+<div class="drawer" id="cartDrawer" style="display:none">
+  <div class="drawer-head"><h3>سلة المشتريات</h3><button id="closeCartBtn" style="background:none;font-size:20px">✕</button></div>
+  <div class="drawer-body" id="cartDrawerBody"></div>
+  <div class="drawer-foot">
+    <div class="total-row"><span>الإجمالي</span><span id="cartDrawerTotal">0 ج.م</span></div>
+    <button class="btn btn-gold btn-block" id="checkoutBtn">إتمام الطلب</button>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js"));
+  }
+</script>
+</body>
+</html>

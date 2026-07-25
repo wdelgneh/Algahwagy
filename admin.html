@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة المدير | القهوجي</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="index.html" class="brand"><div class="roast-stamp">ق</div>القهوجي <span class="badge-role">لوحة المدير</span></a>
+  <nav><a href="index.html" target="_blank">مشاهدة المتجر</a><button onclick="logout()">خروج</button></nav>
+</header>
+
+<div class="dash-wrap">
+  <aside class="sidebar">
+    <a class="active" data-tab="overview" onclick="switchTab('overview')">📊 نظرة عامة</a>
+    <a data-tab="products" onclick="switchTab('products')">☕ المنتجات</a>
+    <a data-tab="orders" onclick="switchTab('orders')">📦 الطلبات</a>
+    <a data-tab="customers" onclick="switchTab('customers')">👤 العملاء</a>
+    <a data-tab="merchants" onclick="switchTab('merchants')">🏪 التجار</a>
+    <a data-tab="coupons" onclick="switchTab('coupons')">🏷️ الكوبونات والعروض</a>
+    <a data-tab="reports" onclick="switchTab('reports')">📈 التقارير</a>
+  </aside>
+
+  <main class="dash-main">
+    <!-- نظرة عامة -->
+    <section class="dash-tab active" id="tab-overview">
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="section-head"><h2 style="font-size:18px">أحدث الطلبات</h2></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>العميل</th><th>التاريخ</th><th>الإجمالي</th><th>الحالة</th></tr></thead>
+        <tbody id="recentOrdersBody"></tbody>
+      </table></div>
+    </section>
+
+    <!-- المنتجات -->
+    <section class="dash-tab" id="tab-products">
+      <div class="section-head"><h2>المنتجات</h2><button class="btn btn-gold btn-sm" onclick="openProductForm()">+ منتج جديد</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>الصورة</th><th>الاسم</th><th>الفئة</th><th>المخزون</th><th>سعر قطاعي (100جم)</th><th>سعر جملة (100جم)</th><th>الحالة</th><th></th></tr></thead>
+        <tbody id="productsBody"></tbody>
+      </table></div>
+    </section>
+
+    <!-- الطلبات -->
+    <section class="dash-tab" id="tab-orders">
+      <div class="section-head"><h2>إدارة الطلبات</h2>
+        <div class="chip-group">
+          <button class="chip active" onclick="filterOrders('all',this)">الكل</button>
+          <button class="chip" onclick="filterOrders('new',this)">جديدة</button>
+          <button class="chip" onclick="filterOrders('processing',this)">جاري التجهيز</button>
+          <button class="chip" onclick="filterOrders('shipped',this)">تم الشحن</button>
+          <button class="chip" onclick="filterOrders('delivered',this)">تم التسليم</button>
+        </div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>رقم الطلب</th><th>العميل</th><th>النوع</th><th>التاريخ</th><th>الإجمالي</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+        <tbody id="ordersBody"></tbody>
+      </table></div>
+    </section>
+
+    <!-- العملاء -->
+    <section class="dash-tab" id="tab-customers">
+      <div class="section-head"><h2>العملاء</h2></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>الاسم</th><th>الهاتف</th><th>البريد الإلكتروني</th><th>عدد الطلبات</th><th>تاريخ التسجيل</th></tr></thead>
+        <tbody id="customersBody"></tbody>
+      </table></div>
+    </section>
+
+    <!-- التجار -->
+    <section class="dash-tab" id="tab-merchants">
+      <div class="section-head"><h2>التجار</h2></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>الاسم</th><th>المتجر</th><th>الهاتف</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+        <tbody id="merchantsBody"></tbody>
+      </table></div>
+    </section>
+
+    <!-- الكوبونات والعروض -->
+    <section class="dash-tab" id="tab-coupons">
+      <div class="section-head"><h2>الكوبونات</h2><button class="btn btn-gold btn-sm" onclick="openCouponForm()">+ كوبون جديد</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>الكود</th><th>نسبة الخصم</th><th>الحالة</th><th></th></tr></thead>
+        <tbody id="couponsBody"></tbody>
+      </table></div>
+
+      <div class="section-head" style="margin-top:30px"><h2>العروض والإشعارات الجماعية</h2><button class="btn btn-gold btn-sm" onclick="openOfferForm()">+ عرض جديد</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>العنوان</th><th>الوصف</th><th>الحالة</th><th></th></tr></thead>
+        <tbody id="offersBody"></tbody>
+      </table></div>
+    </section>
+
+    <!-- التقارير -->
+    <section class="dash-tab" id="tab-reports">
+      <div class="section-head"><h2>تقارير المبيعات</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" onclick="exportOrdersExcel()">تصدير Excel</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportOrdersPDF()">تصدير PDF</button>
+        </div>
+      </div>
+      <div class="stat-grid" id="reportStatGrid"></div>
+      <div class="section-head"><h2 style="font-size:16px">الأكثر مبيعاً</h2></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>المنتج</th><th>الكمية المباعة</th><th>إجمالي المبيعات</th></tr></thead>
+        <tbody id="topProductsBody"></tbody>
+      </table></div>
+    </section>
+  </main>
+</div>
+
+<div id="modalRoot"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

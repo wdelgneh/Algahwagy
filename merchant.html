@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التاجر | القهوجي</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="index.html" class="brand"><div class="roast-stamp">ق</div>القهوجي <span class="badge-role">حساب تاجر</span></a>
+  <nav><a href="index.html">تصفّح المتجر</a><button onclick="logout()">خروج</button></nav>
+</header>
+
+<div class="dash-wrap">
+  <aside class="sidebar">
+    <a class="active" data-tab="m-overview" onclick="switchMTab('m-overview')">📊 نظرة عامة</a>
+    <a data-tab="m-orders" onclick="switchMTab('m-orders')">📦 طلباتي</a>
+    <a data-tab="m-statement" onclick="switchMTab('m-statement')">🧾 كشف الحساب</a>
+    <a data-tab="m-offers" onclick="switchMTab('m-offers')">🎁 العروض والإشعارات</a>
+  </aside>
+
+  <main class="dash-main">
+    <section class="dash-tab active" id="tab-m-overview">
+      <div id="approvalNotice"></div>
+      <div class="stat-grid" id="mStatGrid"></div>
+      <p style="color:#8a7a6a;font-size:14px">تصفّح المنتجات وأضفها للسلة من <a href="index.html" style="color:var(--coffee-700);font-weight:700">صفحة المتجر</a> — ستظهر لك أسعار الجملة تلقائياً بعد تفعيل حسابك.</p>
+    </section>
+
+    <section class="dash-tab" id="tab-m-orders">
+      <div class="section-head"><h2>طلباتي</h2></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>رقم الطلب</th><th>التاريخ</th><th>الإجمالي</th><th>الحالة</th></tr></thead>
+        <tbody id="mOrdersBody"></tbody>
+      </table></div>
+    </section>
+
+    <section class="dash-tab" id="tab-m-statement">
+      <div class="section-head"><h2>كشف حساب مبسط</h2></div>
+      <div class="stat-grid" id="statementStatGrid"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>رقم الطلب</th><th>التاريخ</th><th>المبلغ</th><th>طريقة الدفع</th><th>الحالة</th></tr></thead>
+        <tbody id="statementBody"></tbody>
+      </table></div>
+    </section>
+
+    <section class="dash-tab" id="tab-m-offers">
+      <div class="section-head"><h2>العروض المتاحة</h2></div>
+      <div class="grid" id="mOffersGrid"></div>
+    </section>
+  </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/merchant.js"></script>
+</body>
+</html>

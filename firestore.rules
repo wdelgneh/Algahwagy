@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function myRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    function isAdmin() {
+      return isSignedIn() && myRole() == 'admin';
+    }
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // المستخدمون: كل مستخدم يقرأ/يعدّل بياناته فقط، والمدير يرى ويعدّل الجميع
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid);
+      // منع المستخدم من تغيير دوره أو حالة موافقته بنفسه
+      allow update: if isAdmin() || (isOwner(uid)
+                      && request.resource.data.role == resource.data.role
+                      && request.resource.data.approved == resource.data.approved);
+      allow delete: if isAdmin();
+    }
+
+    // المنتجات: الجميع (حتى الزوار) يمكنهم القراءة، والمدير فقط يكتب
+    match /products/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // الطلبات: صاحب الطلب أو المدير فقط يمكنه القراءة، والمدير فقط يعدّل الحالة
+    match /orders/{id} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // الكوبونات والعروض: قراءة عامة، وكتابة للمدير فقط
+    match /coupons/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /offers/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
